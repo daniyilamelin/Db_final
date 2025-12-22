@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(
+                to bottom, 
+                #000000 0%,
+                #000000 30%,
+                #8a2be2 100%
+            );
+            min-height: 100vh;   /* щоб фон не "зʼїжджав" */
+            margin: 0;
+            padding: 20px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0 30px 30px;
+        }
+
+        /* === БОКС ЗАВДАННЯ === */
+        .tasks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 700px;
+        }
+
+        .task-box {
+            background-color: rgba(0, 0, 0, 0.55);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .task-box p {
+            margin: 6px 0;
+        }
+
+        .task-id {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .task-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="button-container">
+    <a href="{{ url_for('index') }}">
+        <button type="button">Return to menu</button>
+    </a>
+    <a href="{{ url_for('add_task') }}">
+        <button type="button">Add task</button>
+    </a>
+    <a href="{{ url_for('delete_task') }}">
+        <button type="button">Delete task</button>
+    </a>
+    <a href="{{ url_for('work_with_one') }}">
+        <button type="button">Work with one</button>
+    </a>
+</div>
+
+<h1>Ваші завдання</h1>
+<p><strong>Кількість завдань:</strong> {{ total_tasks }}</p>
+
+{% if entries %}
+<div class="tasks-container">
+    {% for entry in entries %}
+        <div class="task-box">
+            <p class="task-id">ID: {{ entry[0] }}</p>
+            <p class="task-title">Title: {{ entry[1] }}</p>
+            <p><strong>Date: </strong> {{ entry[2] }}</p>
+            <p><strong>Difficulty: </strong> {{ entry[3] }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p>This blog is empty.</p>
+{% endif %}
+
+</body>
+</html>

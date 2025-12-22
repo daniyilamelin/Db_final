@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(
+                to bottom, 
+                #000000 0%,    /* чорний зверху */
+                #000000 30%,   /* чорного більше */
+                #8a2be2 100%   /* яскравий фіолетовий унизу */
+            );
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-container {
+            margin-top: 50px;
+            margin-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <a href="{{ url_for('browse') }}">
+            <button type="button">Show all tasks</button>
+        </a>
+    </div>
+    
+</body>
+</html>

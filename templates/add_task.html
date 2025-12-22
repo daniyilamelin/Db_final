@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Task</title>
+<style>
+    body {
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to bottom, #000000 0%, #000000 30%, #8a2be2 100%);
+        background-attachment: fixed; /* фіксуємо фон */
+        background-size: cover;       /* фон займає весь екран без повторення */
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+    }
+    .form-container {
+        background-color: rgba(0,0,0,0.5);
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 400px;
+        margin: auto;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 4px;
+        border: none;
+    }
+    button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    .message {
+        margin-top: 15px;
+        color: #ffeb3b;
+    }
+    .back-button {
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+    <a href="{{ url_for('index') }}" class="back-button">
+        <button type="button">Return to menu</button>
+    </a>
+<h2>Add New Task</h2>
+
+<form action="{{ url_for('add_task') }}" method="POST">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date">
+
+    <label for="hard">Difficulty:</label>
+    <input type="text" id="hard" name="hard" placeholder="e.g. 95/100 or hard" required>
+
+    <button type="submit">Add Task</button>
+</form>
+
+  
+    
+    {% if message %}
+        <p class="message">{{ message }}</p>
+    {% endif %}
+</div>
+
+</body>
+</html>
+
+

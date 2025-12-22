@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Manager</title>
+<style>
+body {
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom, #000000 0%, #000000 30%, #8a2be2 100%);
+    background-attachment: fixed;
+    margin: 0;
+    padding: 20px;
+}
+
+.container { display: flex; gap: 40px; align-items: flex-start; }
+.task-details, .add-step-form, .edit-task-form, .steps-list-form {
+    background-color: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+}
+
+.add-step-form, .edit-task-form, .steps-list-form, .edit-step-form { display: none; }
+
+button {
+    background-color: #4CAF50; color: white; padding: 8px 16px; font-size: 14px; border: none; border-radius: 6px;
+    cursor: pointer; margin: 5px 5px 0 0; transition: all 0.3s ease; box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+}
+button:hover { background-color: #45a049; transform: translateY(-2px); box-shadow: 0 5px 8px rgba(0,0,0,0.3); }
+button:active { transform: translateY(0); box-shadow: 0 3px 5px rgba(0,0,0,0.2); }
+
+input { width: 100%; padding: 8px; margin: 8px 0; border-radius: 4px; border: none; }
+label { display: block; margin-top: 10px; }
+
+.message { color: #ffeb3b; margin-top: 15px; }
+
+.buttons-row { margin-top: 10px; display: flex; gap: 10px; }
+.buttons-row button { min-width: 100px; }
+
+.step-item { position: relative; padding:10px; border-bottom:1px solid rgba(255,255,255,0.2); margin-bottom:5px; }
+.step-item:hover { background: rgba(255,255,255,0.05); }
+.edit-step-btn { position: absolute; top:10px; right:10px; display: none; }
+</style>
+<script>
+function toggleVisibility(id) {
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+
+function toggleStepForm(id) {
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.step-item').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            const btn = item.querySelector('.edit-step-btn');
+            if(btn) btn.style.display = 'inline-block';
+        });
+        item.addEventListener('mouseleave', () => {
+            const btn = item.querySelector('.edit-step-btn');
+            if(btn) btn.style.display = 'none';
+        });
+    });
+});
+</script>
+</head>
+<body>
+
+<div class="form-container" style="margin-bottom:20px; display:flex; gap:10px; align-items:center;">
+    <form action="{{ url_for('work_with_one') }}" method="POST" style="display:flex; gap:10px; align-items:center;">
+        <label for="ID">Write ID of task to work:</label>
+        <input type="number" id="ID" name="ID" required>
+        <button type="submit">Choose Task</button>
+    </form>
+
+    <a href="{{ url_for('browse') }}"><button type="button">Back to Tasks</button></a>
+</div>
+
+<div class="container">
+    <div class="task-details">
+        {% if task %}
+        <h2>Task Details</h2>
+        <p><strong>ID:</strong> {{ task[0] }}</p>
+        <p><strong>Title:</strong> {{ task[1] }}</p>
+        <p><strong>Date:</strong> {{ task[2] }}</p>
+        <p><strong>Difficulty:</strong> {{ task[3] }}</p>
+
+        <div class="buttons-row">
+            <button type="button" onclick="toggleVisibility('addStepForm')">Add Step</button>
+            <button type="button" onclick="toggleVisibility('stepsListForm')">Show Steps</button>
+            <button type="button" onclick="toggleVisibility('editTaskForm')">Edit Task</button>
+            <button type="button" onclick="toggleVisibility('deleteStepForm')">Delete Step</button>
+        </div>
+        {% else %}
+        <p>Select a task first.</p>
+        {% endif %}
+    </div>
+
+    {% if task %}
+
+    <div class="add-step-form" id="addStepForm">
+        <h3>Add Step</h3>
+        <form action="{{ url_for('work_with_one') }}" method="POST">
+            <input type="hidden" name="task_id" value="{{ task[0] }}">
+            <label>Title:</label>
+            <input type="text" name="title" required>
+            <label>Something About:</label>
+            <input type="text" name="something_about">
+            <label>Difficulty:</label>
+            <input type="text" name="hard" placeholder="1-100" required>
+            <button type="submit" name="add_step">Add Step</button>
+        </form>
+        {% if message %}
+        <p class="message">{{ message }}</p>
+        {% endif %}
+    </div>
+
+    <div class="edit-task-form" id="editTaskForm">
+        <h3>Edit Task</h3>
+        <form action="{{ url_for('work_with_one') }}" method="POST">
+            <input type="hidden" name="task_id" value="{{ task[0] }}">
+            <label>Title:</label>
+            <input type="text" name="title" value="{{ task[1] }}" required>
+            <label>Date:</label>
+            <input type="date" name="date" value="{{ task[2] }}">
+            <label>Difficulty:</label>
+            <input type="text" name="hard" value="{{ task[3] }}" required>
+            <button type="submit" name="edit_task">Save Changes</button>
+        </form>
+        {% if edit_message %}
+        <p class="message">{{ edit_message }}</p>
+        {% endif %}
+    </div>
+
+<div class="delete-step-form" id="deleteStepForm" style="display:none; margin-top:15px;">
+    <h3>Delete Step</h3>
+    <form action="{{ url_for('work_with_one') }}" method="POST">
+        <label>Step ID to delete: Write the number after the dot (.) in the step ID</label>
+        <input type="text" name="ID" required>
+        <button type="submit" name="delete_step">Delete</button>
+    </form>
+    {% if message %}
+    <p class="message">{{ message }}</p>
+    {% endif %}
+</div>
+
+<script>
+function toggleVisibility(id) {
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+</script>
+
+    <div class="steps-list-form" id="stepsListForm">
+        <h3>Steps</h3>
+        {% if steps %}
+            {% for step in steps %}
+            <div class="step-item">
+                <p>
+                    <strong>Step ID:</strong> {{ step[1] }}.{{ step[0] }} | 
+                    <strong>Title:</strong> {{ step[2] }} | 
+                    <strong>About:</strong> {{ step[3] }} | 
+                    <strong>Difficulty:</strong> {{ step[4] }}
+                </p>
+                <button class="edit-step-btn" type="button" onclick="toggleStepForm('stepForm{{ step[0] }}')">Edit</button>
+
+                <div class="edit-step-form" id="stepForm{{ step[0] }}">
+                    <form action="{{ url_for('work_with_one') }}" method="POST">
+                        <input type="hidden" name="task_id" value="{{ task[0] }}">
+                        <input type="hidden" name="step_id" value="{{ step[0] }}">
+                        <label>Title:</label>
+                        <input type="text" name="title" value="{{ step[2] }}" required>
+                        <label>About:</label>
+                        <input type="text" name="something_about" value="{{ step[3] }}">
+                        <label>Difficulty:</label>
+                        <input type="text" name="hard" value="{{ step[4] }}" required>
+                        <button type="submit" name="edit_step">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No steps yet.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
