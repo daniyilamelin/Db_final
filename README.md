@@ -89,7 +89,7 @@ PostgreSQL
 ### Початкова сторінка
 ![Start](images/main_menu.png)
 
-### Список завдань
+### Список завдань 
 ![Tasks list](images/tasks_list.png)
 
 ### Робота з одним завданням
@@ -111,10 +111,10 @@ PostgreSQL
 ![Delete step](images/delete_step.png)
 
 ### Зміна інформації щодо пункту до завдання
-![Change step](images/add_step.png)
+![Change step](images/change_step.png)
 
 ### Список пунктів до завдання
-![Show task](images/steps_list.png)
+![Show steps](images/steps_list.png)
 
 ---
 
