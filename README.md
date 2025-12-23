@@ -90,7 +90,7 @@ PostgreSQL
 ![Start](images/main_menu.png)
 
 ### Список завдань 
-![Tasks list](images/tasks_list.png)
+![Tasks list](images/task_list.png)
 
 ### Робота з одним завданням
 ![Task details](images/task_details.png)
