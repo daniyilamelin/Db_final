@@ -1,4 +1,4 @@
-<img width="1919" height="1013" alt="image" src="https://github.com/user-attachments/assets/8854828a-7962-4af7-a981-e77dbb1eb42e" />Task Manager (Flask + PostgreSQL)
+Task Manager (Flask + PostgreSQL)
 
 Опис проєкту
 Цей проєкт є міні-застосунком Task Manager, реалізованим із використанням фреймворку Flask та системи керування базами даних PostgreSQL.
